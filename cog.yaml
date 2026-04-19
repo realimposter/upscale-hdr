@@ -7,8 +7,8 @@ build:
     - "wget"
   python_version: "3.10"
   python_packages:
-    - "torch==2.3.0"
-    - "torchvision==0.18.0"
+    - "torch==2.0.1"
+    - "torchvision==0.15.2"
     - "realesrgan==0.3.0"
     - "basicsr==1.4.2"
     - "facexlib==0.3.0"
