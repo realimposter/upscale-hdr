@@ -1,0 +1,22 @@
+name: Push to Replicate
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  push_to_replicate:
+    name: Build and Push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Cog
+        uses: replicate/setup-cog@v2
+        with:
+          token: ${{ secrets.REPLICATE_API_TOKEN }}
+
+      - name: Push model to Replicate
+        run: cog push r8.im/realimposter/upscale-hdr
