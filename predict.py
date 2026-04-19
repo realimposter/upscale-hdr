@@ -67,7 +67,7 @@ class Predictor(BasePredictor):
         model_x4 = RRDBNet(num_in_ch=3, num_out_ch=3, num_feat=64, num_block=23, num_grow_ch=32, scale=4)
         self.upsampler_x4 = RealESRGANer(
             scale=4,
-            model_path="/weights/RealESRGAN_x4plus.pth",
+            model_path="weights/RealESRGAN_x4plus.pth",
             dni_weight=None,
             model=model_x4,
             tile=400,
@@ -80,7 +80,7 @@ class Predictor(BasePredictor):
         # Initialize GFPGAN for face enhancement
         if HAS_FACEXLIB:
             self.face_enhancer = GFPGANer(
-                model_path='/weights/GFPGANv1.3.pth',
+                model_path='weights/GFPGANv1.3.pth',
                 upscale=4,
                 arch='clean',
                 channel_multiplier=2,

@@ -17,8 +17,8 @@ build:
     - "numpy==1.26.4"
     - "Pillow==10.2.0"
   run:
-    - "mkdir -p /weights"
-    - "wget https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth -O /weights/RealESRGAN_x4plus.pth"
-    - "wget https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.2.4/RealESRGAN_x4plus_anime_6B.pth -O /weights/RealESRGAN_x4plus_anime_6B.pth"
-    - "wget https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.3.pth -O /weights/GFPGANv1.3.pth"
+    - "mkdir -p weights"
+    - "wget https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth -O weights/RealESRGAN_x4plus.pth"
+    - "wget https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.2.4/RealESRGAN_x4plus_anime_6B.pth -O weights/RealESRGAN_x4plus_anime_6B.pth"
+    - "wget https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.3.pth -O weights/GFPGANv1.3.pth"
 predict: "predict.py:Predictor"
