@@ -19,7 +19,7 @@ build:
     - "tqdm==4.66.2"
   run:
     - "pip install --no-deps basicsr==1.4.2 realesrgan==0.3.0"
-    - "python -c \"import os, basicsr; f=os.path.join(os.path.dirname(basicsr.__file__), 'data/degradations.py'); s=open(f).read().replace('from torchvision.transforms.functional_tensor ', 'from torchvision.transforms.functional '); open(f, 'w').write(s)\" || true"
+    - "python -c \"import site, os; [open(f, 'w').write(open(f).read().replace('from torchvision.transforms.functional_tensor ', 'from torchvision.transforms.functional ')) for p in site.getsitepackages() for f in [os.path.join(p, 'basicsr/data/degradations.py')] if os.path.exists(f)]\""
     - "mkdir -p weights"
     - "wget https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth -O weights/RealESRGAN_x4plus.pth"
 predict: "predict.py:Predictor"
