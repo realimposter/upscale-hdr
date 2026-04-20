@@ -16,13 +16,6 @@ from basicsr.archs.rrdbnet_arch import RRDBNet
 from realesrgan import RealESRGANer
 from realesrgan.archs.srvgg_arch import SRVGGNetCompact
 
-try:
-    from facexlib.utils.face_restoration_helper import FaceRestoreHelper
-    from gfpgan import GFPGANer
-    HAS_FACEXLIB = True
-except ImportError:
-    HAS_FACEXLIB = False
-
 
 # sRGB to Linear to ACES AP0 matrix (perfect precision)
 M_sRGB_to_ACES = np.array([
@@ -76,18 +69,6 @@ class Predictor(BasePredictor):
             half=True,
             gpu_id=0
         )
-        
-        # Initialize GFPGAN for face enhancement
-        if HAS_FACEXLIB:
-            self.face_enhancer = GFPGANer(
-                model_path='weights/GFPGANv1.3.pth',
-                upscale=4,
-                arch='clean',
-                channel_multiplier=2,
-                bg_upsampler=self.upsampler_x4
-            )
-        else:
-            self.face_enhancer = None
 
     def predict(
         self,
@@ -101,10 +82,6 @@ class Predictor(BasePredictor):
             description="Output resolution constraint. Real-ESRGAN will scale 4x, then Lanczos downsample to fit.",
             choices=["Native 4x", "DCI 4K (4096x2304)", "UHD 4K (3840x2160)"],
             default="DCI 4K (4096x2304)"
-        ),
-        enhance_faces: bool = Input(
-            description="Use GFPGAN to enhance and restore faces in the scene",
-            default=False
         ),
     ) -> CogPath:
         
@@ -155,10 +132,7 @@ class Predictor(BasePredictor):
             
             # Upscale
             try:
-                if enhance_faces and self.face_enhancer is not None:
-                    _, _, output = self.face_enhancer.enhance(img, has_aligned=False, only_center_face=False, paste_back=True)
-                else:
-                    output, _ = upsampler.enhance(img, outscale=4)
+                output, _ = upsampler.enhance(img, outscale=4)
             except RuntimeError as error:
                 print('Error', error)
                 print('If you encounter CUDA out of memory, try to set --tile with a smaller number.')
